@@ -1,6 +1,7 @@
 # Ultimate-Ventoy
 
 This repo mirrors my own USB file structure. i dont include the theme files.
+these folders are to be located on the Root of the Ventoy formatted USB
 
 step-by-step setup
 1. Install Ventoy on a USB Stick for multiboot capabilities(https://www.ventoy.net/en/doc_start.html)
