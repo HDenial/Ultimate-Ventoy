@@ -1,0 +1,92 @@
+# Main options
+title-text: ""
+desktop-image: "background.png"
+desktop-color: "#000000"
+terminal-font: "Terminus Regular 14"
+terminal-box: "terminal_box_*.png"
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+terminal-border: "0"
+
+# Boot menu
++ boot_menu {
+  left = 15%
+  top = 40%
+  width = 55%
+  height = 65%
+  item_font = "Ubuntu Regular 20"
+  item_color = "#cccccc"
+  selected_item_color = "#ffffff"
+  icon_width = 36
+  icon_height = 36
+  item_icon_space = 20
+  item_height = 40
+  item_padding = 2
+  item_spacing = 10
+  selected_item_pixmap_style = "select_*.png"
+}
+
+
+# Countdown label
+# You can change the name of default starting OS here
++ label {
+  left = 15%
+  top = 31%
+  align = "center"
+  id = "__timeout__"
+  text = "Selected OS will start in %d seconds"
+  color = "#cccccc"
+  font = "Ubuntu Regular 17"
+}
++ hbox{ 
+    left = 30%
+    top = 97%
+    width = 10%
+    height = 25
+    + label {text = "@VTOY_HOTKEY_TIP@" color = "white" align = "left"} 
+}
+
+
++ hbox{ 
+    left = 30%
+    top = 95%-25
+    width = 10%
+    height = 25
+    + label {text = "@VTOY_MEM_DISK@" color = "red" align = "left"} 
+}
+
+
++ hbox{ 
+    left = 30%
+    top = 95%-50
+    width = 10%
+    height = 25
+    + label {text = "@VTOY_ISO_RAW@" color = "red" align = "left"} 
+}
+
+
++ hbox{ 
+    left = 30%+200
+    top = 95%-50
+    width = 10%
+    height = 25
+    + label {text = "@VTOY_GRUB2_MODE@" color = "red" align = "left"} 
+}
+
++ hbox{ 
+    left = 30%+200
+    top = 95%-25
+    width = 10%
+    height = 25
+    + label {text = "@VTOY_WIMBOOT_MODE@" color = "red" align = "left"} 
+}
+
++ hbox{ 
+    left = 90%
+    top = 55 
+    width = 10%
+    height = 25
+    + label {text = "@VTOY_ISO_UEFI_DRV@" color = "red" align = "left"} 
+}
