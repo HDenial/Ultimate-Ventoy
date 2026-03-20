@@ -26,6 +26,10 @@ Settings files expect the following content:
 
 You dont need to only use these or even have all of them, change expected names and list order on ventoy.json key and list entries respectively
 
-The autounattend.xml file allows for mostly automated installation of a persistent debloated Windows, that only gets compromised on major updates.
-No more ads, auto-silent installs, shovelware recommendations. Microsoft store and app functionalities unaffected, it lets you choose what you actually want for your windows. 
-Left Copilot in because it might break the system nowadays unfortunately.... 
+  Custom autounattend.xml: A "Client-Control" focused Windows installation.
+
+        Automated & Debloated: Removes shovelware/sponsored apps while keeping the Microsoft Store functional.
+
+        Privacy First: Disables Telemetry, "Tailored Experiences," and silent background installs.
+
+        Diagnostic Ready: Pre-configures AppLocker in Audit Mode for easy post-install troubleshooting.
