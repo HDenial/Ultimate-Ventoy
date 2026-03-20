@@ -20,11 +20,11 @@ Settings files expect the following content:
 - Windows11(25H2).iso
 - Windows10(22H2).iso
 - Ubuntu-24.0.4.3.iso
-- Kali-Linux_Live.iso  (Networking and Security debug/assistence)
+- Kali-Linux_Live.iso  (Networking/Security/DataRecovery)
+- HBCD.iso
 - memtest.iso  (test memory state without booting into host OS)
 
 you dont need to only use these or even have all of them, change expected names and list order on ventoy.json
-i personally didnt include hirens BCD, but am considering adding
 
 The autounattend.xml file allows for the installation of a persistent debloated Windows, that only gets compromised on major updates.
 No more ads, auto-silent installs, shovelware recommendations. Microsoft store and app functionalities unaffected, it lets you choose what you actually want for your windows. 
