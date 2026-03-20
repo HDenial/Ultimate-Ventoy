@@ -20,9 +20,9 @@ Settings files expect the following content:
 - Windows11(25H2).iso
 - Windows10(22H2).iso
 - Ubuntu-24.0.4.3.iso
-- Kali-Linux_Live.iso  (Networking/Security/DataRecovery)
+- Kali-Linux_Live.iso
 - HBCD.iso
-- memtest.iso  (test memory state without booting into host OS)
+- memtest.iso
 
 You dont need to only use these or even have all of them, change expected names and list order on ventoy.json key and list entries respectively
 
