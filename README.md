@@ -1,4 +1,7 @@
 # Ultimate-Ventoy
+
+This repo mirrors my own USB file structure. i dont include the theme files.
+
 step-by-step setup
 1. Install Ventoy on a USB Stick for multiboot capabilities(https://www.ventoy.net/en/doc_start.html)
 2. Create ventoy folder on root
