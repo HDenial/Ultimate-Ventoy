@@ -28,8 +28,8 @@ You dont need to only use these or even have all of them, change expected names 
 
   Custom autounattend.xml: A "Client-Control" focused Windows installation.
 
-        Automated & Debloated: Removes shovelware/sponsored apps while keeping the Microsoft Store functional.
+    Automated & Debloated: Removes shovelware/sponsored apps while keeping the Microsoft Store functional.
 
-        Privacy First: Disables Telemetry, "Tailored Experiences," and silent background installs.
+    Privacy First: Disables Telemetry, "Tailored Experiences," and silent background installs.
 
-        Diagnostic Ready: Pre-configures AppLocker in Audit Mode for easy post-install troubleshooting.
+    Diagnostic Ready: Pre-configures AppLocker in Audit Mode for easy post-install troubleshooting.
