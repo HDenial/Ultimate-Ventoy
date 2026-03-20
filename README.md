@@ -1,7 +1,7 @@
 # Ultimate-Ventoy
 
 This repo mirrors my own USB file structure. i dont include the theme files.
-these folders are to be located on the Root of the Ventoy formatted USB
+these are on the Root of the exfat formatted partition.
 
 step-by-step setup
 1. Install Ventoy on a USB Stick for multiboot capabilities(https://www.ventoy.net/en/doc_start.html)
@@ -22,13 +22,13 @@ Settings files expect the following content:
 - Ubuntu-24.0.4.3.iso
 - Kali-Linux_Live.iso
 - HBCD.iso
-- memtest.iso
+- memtest.iso (memtest86+)
 
 You dont need to only use these or even have all of them, change expected names and list order on ventoy.json key and list entries respectively
 
   Custom autounattend.xml: A "Client-Control" focused Windows installation.
 
-    Automated & Debloated: Removes shovelware/sponsored apps while keeping the Microsoft Store functional.
+    Automated & Debloated: Removes shovelware/sponsored apps while keeping the Microsoft Store functional, giving the user the option to install them back.
 
     Privacy First: Disables Telemetry, "Tailored Experiences," and silent background installs.
 
