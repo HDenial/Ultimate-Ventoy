@@ -35,4 +35,5 @@ You dont need to only use these or even have all of them, change expected names 
     Diagnostic Ready: Pre-configures AppLocker in Audit Mode for easy post-install troubleshooting.
 
 Booted drive result:
-<img width="1024" height="766" alt="image" src="https://github.com/user-attachments/assets/8dc0c100-76c6-4abf-8700-e15dd831c4f3" />
+<img width="1023" height="766" alt="image" src="https://github.com/user-attachments/assets/7f8acacf-8ba0-4f9b-ab1f-07ca87ded9a3" />
+
