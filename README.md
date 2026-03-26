@@ -33,3 +33,6 @@ You dont need to only use these or even have all of them, change expected names 
     Privacy First: Disables Telemetry, "Tailored Experiences," and silent background installs.
 
     Diagnostic Ready: Pre-configures AppLocker in Audit Mode for easy post-install troubleshooting.
+
+Booted drive result:
+<img width="1024" height="766" alt="image" src="https://github.com/user-attachments/assets/8dc0c100-76c6-4abf-8700-e15dd831c4f3" />
