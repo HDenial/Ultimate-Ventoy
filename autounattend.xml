@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=pt-BR&Locale=pt-BR&Keyboard=00000416&GeoLocation=244&ProcessorArchitecture=amd64&BypassRequirementsCheck=true&ComputerNameMode=Random&CompactOsMode=Default&TimeZoneMode=Implicit&PartitionMode=Interactive&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Automatic&PEMode=Default&UserAccountMode=InteractiveLocal&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=HiddenSystem&ShowFileExtensions=true&TaskbarSearch=Box&TaskbarIconsMode=Default&DisableWidgets=true&DisableBingResults=true&StartTilesMode=Default&StartPinsMode=Empty&DisableFastStartup=true&EnableLongPaths=true&DisableLastAccess=true&PreventAutomaticReboot=true&DisableAppSuggestions=true&PreventDeviceEncryption=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&DisableAutomaticRestartSignOn=true&ProcessAudit=true&ProcessAuditCommandLine=true&EffectsMode=Default&DesktopIconsMode=Default&StartFoldersMode=Custom&StartFolderDocuments=true&StartFolderDownloads=true&StartFolderFileExplorer=true&StartFolderNetwork=true&StartFolderPersonalFolder=true&StartFolderPictures=true&StartFolderSettings=true&WifiMode=Interactive&ExpressSettings=DisableAll&LockKeysMode=Skip&StickyKeysMode=Default&ColorMode=Default&WallpaperMode=Default&LockScreenMode=Default&RemoveBingSearch=true&RemoveClipchamp=true&RemoveCortana=true&RemoveFeedbackHub=true&RemoveInternetExplorer=true&RemoveMaps=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOneNote=true&RemoveSkype=true&RemoveSolitaire=true&RemoveTeams=true&RemoveGetStarted=true&RemoveWeather=true&RemoveXboxApps=true&WdacMode=Skip&AppLockerMode=Configure&AppLockerPolicyXml=%3CAppLockerPolicy+Version%3D%221%22%3E%0D%0A++%3CRuleCollection+Type%3D%22Appx%22+EnforcementMode%3D%22AuditOnly%22%3E%0D%0A++++%3CFilePublisherRule+Id%3D%2230591721-b29c-457d-b083-243f87b3527d%22+Name%3D%22All+signed+packaged+apps%22+Description%3D%22Allows+members+of+the+Everyone+group+to+run+packaged+apps+that+are+signed.%22+UserOrGroupSid%3D%22S-1-1-0%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePublisherCondition+PublisherName%3D%22*%22+ProductName%3D%22*%22+BinaryName%3D%22*%22%3E%0D%0A++++++++++%3CBinaryVersionRange+LowSection%3D%220.0.0.0%22+HighSection%3D%22*%22+%2F%3E%0D%0A++++++++%3C%2FFilePublisherCondition%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePublisherRule%3E%0D%0A++%3C%2FRuleCollection%3E%0D%0A++%3CRuleCollection+Type%3D%22Dll%22+EnforcementMode%3D%22NotConfigured%22+%2F%3E%0D%0A++%3CRuleCollection+Type%3D%22Exe%22+EnforcementMode%3D%22AuditOnly%22%3E%0D%0A++++%3CFilePathRule+Id%3D%22921cc481-6e17-4653-8f75-050b80acca20%22+Name%3D%22%28Default+Rule%29+All+files+located+in+the+Program+Files+folder%22+Description%3D%22Allows+members+of+the+Everyone+group+to+run+applications+that+are+located+in+the+Program+Files+folder.%22+UserOrGroupSid%3D%22S-1-1-0%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22%25PROGRAMFILES%25%5C*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++++%3CFilePathRule+Id%3D%22a61c8b2c-a319-4cd0-9690-d2177cad7b51%22+Name%3D%22%28Default+Rule%29+All+files+located+in+the+Windows+folder%22+Description%3D%22Allows+members+of+the+Everyone+group+to+run+applications+that+are+located+in+the+Windows+folder.%22+UserOrGroupSid%3D%22S-1-1-0%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22%25WINDIR%25%5C*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++++%3CFilePathRule+Id%3D%22fd686d83-a829-4351-8ff4-27c7de5755d2%22+Name%3D%22%28Default+Rule%29+All+files%22+Description%3D%22Allows+members+of+the+local+Administrators+group+to+run+all+applications.%22+UserOrGroupSid%3D%22S-1-5-32-544%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++%3C%2FRuleCollection%3E%0D%0A++%3CRuleCollection+Type%3D%22Msi%22+EnforcementMode%3D%22AuditOnly%22%3E%0D%0A++++%3CFilePathRule+Id%3D%225b290184-345a-4453-b184-45305f6d9a54%22+Name%3D%22%28Default+Rule%29+All+Windows+Installer+files+in+%25systemdrive%25%5CWindows%5CInstaller%22+Description%3D%22Allows+members+of+the+Everyone+group+to+run+all+Windows+Installer+files+located+in+%25systemdrive%25%5CWindows%5CInstaller.%22+UserOrGroupSid%3D%22S-1-1-0%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22%25WINDIR%25%5CInstaller%5C*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++++%3CFilePathRule+Id%3D%2264ad46ff-0d71-4fa0-a30b-3f3d30c5433d%22+Name%3D%22%28Default+Rule%29+All+Windows+Installer+files%22+Description%3D%22Allows+members+of+the+local+Administrators+group+to+run+all+Windows+Installer+files.%22+UserOrGroupSid%3D%22S-1-5-32-544%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22*.*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++%3C%2FRuleCollection%3E%0D%0A++%3CRuleCollection+Type%3D%22Script%22+EnforcementMode%3D%22AuditOnly%22%3E%0D%0A++++%3CFilePathRule+Id%3D%2206dce67b-934c-454f-a263-2515c8796a5d%22+Name%3D%22%28Default+Rule%29+All+scripts+located+in+the+Program+Files+folder%22+Description%3D%22Allows+members+of+the+Everyone+group+to+run+scripts+that+are+located+in+the+Program+Files+folder.%22+UserOrGroupSid%3D%22S-1-1-0%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22%25PROGRAMFILES%25%5C*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++++%3CFilePathRule+Id%3D%229428c672-5fc3-47f4-808a-a0011f36dd2c%22+Name%3D%22%28Default+Rule%29+All+scripts+located+in+the+Windows+folder%22+Description%3D%22Allows+members+of+the+Everyone+group+to+run+scripts+that+are+located+in+the+Windows+folder.%22+UserOrGroupSid%3D%22S-1-1-0%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22%25WINDIR%25%5C*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++++%3CFilePathRule+Id%3D%22ed97d0cb-15ff-430f-b82c-8d7832957725%22+Name%3D%22%28Default+Rule%29+All+scripts%22+Description%3D%22Allows+members+of+the+local+Administrators+group+to+run+all+scripts.%22+UserOrGroupSid%3D%22S-1-5-32-544%22+Action%3D%22Allow%22%3E%0D%0A++++++%3CConditions%3E%0D%0A++++++++%3CFilePathCondition+Path%3D%22*%22+%2F%3E%0D%0A++++++%3C%2FConditions%3E%0D%0A++++%3C%2FFilePathRule%3E%0D%0A++%3C%2FRuleCollection%3E%0D%0A%3C%2FAppLockerPolicy%3E-->
+	<!-- Better windows semi-auto install -->
+	<!-- generated by https://schneegans.de/windows/unattend-generator/ added functionality by hand-->
+	<!-- Will auto install win pro bypassing install requirements, tweak user settings, skip network/online account req, remove bloatware listed under RemovePackages.ps1, 
+	disable reinstallation of bloatware and background parasites -->
+	<!-- if bypass oobe doesnt work just run: start ms-cxh:localonly from shift+f10 terminal -->
+	
 	<settings pass="offlineServicing"></settings>
 	<settings pass="windowsPE">
 		<component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
@@ -8,6 +13,8 @@
 		</component>
 		<component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<UserData>
+				<!-- Below key is a generic retail pro key, will auto-install win pro version, wont activate by itself, youll need a genuine key -->
+				<!-- Remove Product key section or leave key entr empty to go with HID version -->
 				<ProductKey>
 					<Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
 					<WillShowUI>OnError</WillShowUI>
@@ -31,7 +38,9 @@
 			</RunSynchronous>
 		</component>
 	</settings>
+	<!-- skip generalize step -->
 	<settings pass="generalize"></settings>
+	<!-- Specilize.ps1 call -->
 	<settings pass="specialize">
 		<component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<RunSynchronous>
@@ -101,6 +110,7 @@ foreach( $file in $Document.unattend.Extensions.File ) {
 }
 		</ExtractScript>
 		<File path="C:\Windows\Setup\Scripts\RemovePackages.ps1">
+<!-- List of bloatware to be removed automatically -->
 $selectors = @(
 	'Microsoft.BingSearch';
 	'Clipchamp.Clipchamp';
@@ -332,9 +342,19 @@ Set-ItemProperty -LiteralPath $key -Name 'ConfigureStartPins' -Value $json -Type
 		<File path="C:\Windows\Setup\Scripts\Specialize.ps1">
 $scripts = @(
 	{
+	#Bypass nro during oobe for offline installs
+		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE" /v BypassNRO /t REG_DWORD /d 1 /f;
+	};
+	{
+	#Stop WindowsUpdate from force checking during setup
+		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup" /v DisableDynamicUpdate /t REG_DWORD /d 1 /f;
+	};
+	{
+	#Allows win10 to upgrade to 11 without requirements
 		reg.exe add "HKLM\SYSTEM\Setup\MoSetup" /v AllowUpgradesWithUnsupportedTPMOrCPU /t REG_DWORD /d 1 /f;
 	};
 	{
+	#Prevents auto-install of Teams
 		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications" /v ConfigureChatAutoInstall /t REG_DWORD /d 0 /f;
 	};
 	{
@@ -344,30 +364,52 @@ $scripts = @(
 		&amp; 'C:\Windows\Setup\Scripts\RemoveCapabilities.ps1';
 	};
 	{
+	#Do not enforce password change after x time
 		net.exe accounts /maxpwage:UNLIMITED;
 	};
 	{
+	#Enables long path in Documents for full Path display
 		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
 	};
 	{
+	#logging system changes for troubleshooting
 		auditpol.exe /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable;
 	};
 	{
+	#includes cmd commands ran in audit logs 
 		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f;
 	};
 	{
+	#reduces disk overhead, prevents windows from registering last time a file was looked at
 		fsutil.exe behavior set disableLastAccess 1;
 	};
 	{
-		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v AUOptions /t REG_DWORD /d 4 /f;
+    # download updates directly from Microsoft and NEVER share update files with others.
+    	reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" /v "DODownloadMode" /t REG_DWORD /d 0 /f;
+	};
+	{
+    # Disables "Monthly Upload Limits" and background P2P activity.
+    	reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" /v "DODownloadMode" /t REG_DWORD /d 0 /f;
+	};
+	{
+	#Warns theres an update to be downloaded.NEVER downloads automatically or installs, user must ask from windows update. opt for 1 or 3(auto down|ask install)
+	#Prevents Windows from auto rebooting if anyone is logged in to the system
+	#Sends minimal telemetry back to Microsoft
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v AUOptions /t REG_DWORD /d 1 /f;
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoRebootWithLoggedOnUsers /t REG_DWORD /d 1 /f;
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v "AllowTelemetry" /t REG_DWORD /d 1 /f
 	};
 	{
+	#Makes windows think youre never inactive
 		Register-ScheduledTask -TaskName 'MoveActiveHours' -Xml $( Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\MoveActiveHours.xml' -Raw );
 	};
 	{
+	#creates fastboot cache file
+	#makes Turn Off button actually cold shutdown
+	#keeps hibernate option
+		powercfg.exe /hibernate on
 		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f
 	};
 	{
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f;
