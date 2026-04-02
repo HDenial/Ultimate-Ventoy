@@ -23,6 +23,7 @@
 			</UserData>
 			<UseConfigurationSet>false</UseConfigurationSet>
 			<RunSynchronous>
+				<!-- bypassing win11 install requirements -->
 				<RunSynchronousCommand wcm:action="add">
 					<Order>1</Order>
 					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v BypassTPMCheck /t REG_DWORD /d 1 /f</Path>
@@ -339,6 +340,7 @@ Set-ItemProperty -LiteralPath $key -Name 'ConfigureStartPins' -Value $json -Type
 	&lt;/RuleCollection&gt;
 &lt;/AppLockerPolicy&gt;
 		</File>
+		<!-- registry edits bellow! -->
 		<File path="C:\Windows\Setup\Scripts\Specialize.ps1">
 $scripts = @(
 	{
@@ -376,7 +378,7 @@ $scripts = @(
 		auditpol.exe /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable;
 	};
 	{
-	#includes cmd commands ran in audit logs 
+	#include cmd commands ran in audit logs for troubleshooting
 		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f;
 	};
 	{
@@ -392,7 +394,7 @@ $scripts = @(
     	reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" /v "DODownloadMode" /t REG_DWORD /d 0 /f;
 	};
 	{
-	#Warns theres an update to be downloaded.NEVER downloads automatically or installs, user must ask from windows update. opt for 1 or 3(auto down|ask install)
+	#Warns theres an update to be downloaded. NEVER downloads automatically or installs, user must ask from windows update menu. opt for 1(ask both) or 3(auto down|ask install)
 	#Prevents Windows from auto rebooting if anyone is logged in to the system
 	#Sends minimal telemetry back to Microsoft
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v AUOptions /t REG_DWORD /d 1 /f;
@@ -404,44 +406,47 @@ $scripts = @(
 		Register-ScheduledTask -TaskName 'MoveActiveHours' -Xml $( Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\MoveActiveHours.xml' -Raw );
 	};
 	{
-	#creates fastboot cache file
-	#makes Turn Off button actually cold shutdown
-	#keeps hibernate option
-		powercfg.exe /hibernate on
-		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f;
-		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f
-	};
-	{
+	#Removes annoying news to prevent cluttering menus
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f;
 	};
 	{
+	#Stops windows from auto-installing apps like TikTok,CandyCrush,Spotify, etc...
+	#Cuts off usage data telemetry, used to serve you ads
 		reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t REG_DWORD /d 1 /f;
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" /v "DisableTailoredExperiencesWithDiagnosticData" /t REG_DWORD /d 1 /f
 	};
 	{
+	#Prevents win11 from force criptographing your drive via Bitlocker, can still enable on settings later
 		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\BitLocker" /v "PreventDeviceEncryption" /t REG_DWORD /d 1 /f;
 	};
 	{
+	#Removes Edge first experience annoying pop-ups, quicker to install a better browser lol
 		reg.exe add "HKLM\Software\Policies\Microsoft\Edge" /v HideFirstRunExperience /t REG_DWORD /d 1 /f;
 	};
 	{
+	#Stops edge from squatting on your RAM
 		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v BackgroundModeEnabled /t REG_DWORD /d 0 /f;
 		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v StartupBoostEnabled /t REG_DWORD /d 0 /f;
 	};
 	{
+	#Stops MicrosoftStore from auto updating or downloading anything you didnt ask for. will still warn you about them 
 	  reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" /v AutoDownload /t REG_DWORD /d 2 /f;
 	};
 	{
 		&amp; 'C:\Windows\Setup\Scripts\SetStartPins.ps1';
 	};
 	{
-		  reg.exe add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableAutomaticRestartSignOn" /t REG_DWORD /d 1 /f;
+	#Prevents windows from auto booting into your user session logged in after updates
+		reg.exe add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableAutomaticRestartSignOn" /t REG_DWORD /d 1 /f;
 	};
 	{
-	    Get-ScheduledTask -TaskPath "\Microsoft\Windows\ContentDeliveryManager\" | Disable-ScheduledTask
-      Get-ScheduledTask -TaskPath "\Microsoft\Windows\PushToInstall\" | Disable-ScheduledTask -ErrorAction SilentlyContinue
-  };
+	#Kills windows PhoneHome for new ads
+	#Kills Network Pushed installations
+		Get-ScheduledTask -TaskPath "\Microsoft\Windows\ContentDeliveryManager\" | Disable-ScheduledTask
+    	Get-ScheduledTask -TaskPath "\Microsoft\Windows\PushToInstall\" | Disable-ScheduledTask -ErrorAction SilentlyContinue
+    };
 	{
+	#Creates an AppLocker service instance that starts with your PC. Wont stop you from running anything but will log if any unsigned exe is ran from user folders.
 		Get-Service -Name 'AppIDSvc' | Set-Service -StartupType 'Automatic';
 		Get-Service -Name 'AppIDSvc' | Start-Service;
 		Set-AppLockerPolicy -XmlPolicy 'C:\Windows\Setup\Scripts\AppLockerPolicy.xml';
@@ -579,6 +584,16 @@ $scripts = @(
 		  'C:\Windows\Panther\unattend-original.xml';
 		  'C:\Windows\Setup\Scripts\Wifi.xml';
 		) -Force -ErrorAction 'SilentlyContinue' -Verbose;
+	};
+	{
+	#creates hibernation cache file
+	#Keeps hibernate as full system store
+	#makes Power Off button actually shutdown the kernel
+	#keeps hibernate option on visual menu
+		powercfg.exe /hibernate on
+		powercfg.exe /h /type full
+		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f
 	};
 );
 
