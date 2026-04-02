@@ -426,10 +426,8 @@ $scripts = @(
 	};
 	{
 	#Removes Edge first experience annoying pop-ups, quicker to install a better browser lol
-		reg.exe add "HKLM\Software\Policies\Microsoft\Edge" /v HideFirstRunExperience /t REG_DWORD /d 1 /f;
-	};
-	{
 	#Stops edge from squatting on your RAM
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge" /v HideFirstRunExperience /t REG_DWORD /d 1 /f;
 		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v BackgroundModeEnabled /t REG_DWORD /d 0 /f;
 		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v StartupBoostEnabled /t REG_DWORD /d 0 /f;
 	};
@@ -480,8 +478,9 @@ $scripts = @(
 	# No more WifiSense, i mean wtf were they thinking???
 	# No more making your PC a labrat for Microsoft untested software
 	
-		Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force;
-		$adapters = Get-WmiObject Win32_NetworkAdapterConfiguration; $adapters | ForEach-Object { $_.SetTcpipNetbios(2) } — value 2 = Disable
+		Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force; 
+		Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart; 
+		$adapters = Get-WmiObject Win32_NetworkAdapterConfiguration; $adapters | ForEach-Object { $_.SetTcpipNetbios(2) };
 		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f;
 		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "NoDriveTypeAutoRun" /t REG_DWORD /d 255 /f
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" /v "EnableMulticast" /t REG_DWORD /d 0 /f
@@ -573,7 +572,7 @@ $scripts = @(
 	};
 	{
 	#No more "How's the experience?" pop-ups ever again
-		reg.exe add	"HKCU\DefaultUser\Software\Microsoft\Siuf\Rules" /v "NumberOfSIUFInPeriod" /t REG_DWORD /d 0 /f; 
+		reg.exe add	"HKU\DefaultUser\Software\Microsoft\Siuf\Rules" /v "NumberOfSIUFInPeriod" /t REG_DWORD /d 0 /f; 
 	};
 	{
 	#further killing of windows CDM for no silent installs of PUPs
@@ -603,7 +602,7 @@ $scripts = @(
 	};
 	{
 	#Advertising ID behaviour ad targeting dead
-		  reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f;
+		  reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f;
 	};
 	{
 	#Disables Bing suggestions
@@ -655,6 +654,10 @@ $scripts = @(
 			powercfg.exe /h /type full
 			reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f;
 			reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f
+	};
+	{
+		#opting out of telemetry
+			Get-ScheduledTask -TaskPath "\Microsoft\Windows\Customer Experience Improvement Program\" | Disable-ScheduledTask
 	};
 	{
 		#cleanup
