@@ -41,7 +41,7 @@
 	</settings>
 	<!-- skip generalize step -->
 	<settings pass="generalize"></settings>
-	<!-- Specilize.ps1 call -->
+	<!-- Specialize.ps1 call -->
 	<settings pass="specialize">
 		<component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<RunSynchronous>
@@ -447,7 +447,7 @@ $scripts = @(
 	{
 	#Kills windows PhoneHome for new ads
 	#Kills Network Pushed installations
-		Get-ScheduledTask -TaskPath "\Microsoft\Windows\ContentDeliveryManager\" | Disable-ScheduledTask
+		Get-ScheduledTask -TaskPath "\Microsoft\Windows\ContentDeliveryManager\" | Disable-ScheduledTask -ErrorAction SilentlyContinue
     	Get-ScheduledTask -TaskPath "\Microsoft\Windows\PushToInstall\" | Disable-ScheduledTask -ErrorAction SilentlyContinue
     };
 	{
@@ -463,14 +463,31 @@ $scripts = @(
 		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v "UploadUserActivities" /t REG_DWORD /d 0 /f;
 	};
 	{
-	# Disable even more ad telemetry services, Goodbye windows compatibility telemetry!
+	# Disable the ad telemetry service, Goodbye windows compatibility telemetry!
+	# No bullshit push notifications
+	# HAHAHAHA REMOTELY EDIT YOUR REGISTRY???? , not anymore
 		Get-Service -Name 'DiagTrack' | Set-Service -StartupType 'Disabled';
-		Get-Service -Name 'dmwappushservice' | Set-Service -StartupType 'Disabled';
+		Get-Service -Name 'dmwappushservice' -ErrorAction SilentlyContinue | Set-Service -StartupType 'Disabled';
+		Get-Service -Name 'RemoteRegistry' -ErrorAction SilentlyContinue | Set-Service -StartupType 'Disabled';
 	};
 	{
-	#Just in case....
+	#Just in case.... some security tweaks, disabling legacy protocols and dangerous functions rarely used:
+	# SMB1 = Eternal Blue(just in case they're lying  no more multicast(gaming?)
+	# NETBIOS2, legacy attack surface. just use DNS or mDNS
+	# Remote Assist = Scam remote acess
+	# AutoRun = no pendrive autorun software will work(only run apps from external drives if you ask)
+	# No more LLMNS multicast
+	# No more WifiSense, i mean wtf were they thinking???
+	# No more making your PC a labrat for Microsoft untested software
+	
 		Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force;
+		$adapters = Get-WmiObject Win32_NetworkAdapterConfiguration; $adapters | ForEach-Object { $_.SetTcpipNetbios(2) } — value 2 = Disable
 		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "NoDriveTypeAutoRun" /t REG_DWORD /d 255 /f
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" /v "EnableMulticast" /t REG_DWORD /d 0 /f
+		reg.exe add "HKLM\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" /v AutoConnectAllowedOEM /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\System" /v "AllowExperimentation" /t REG_DWORD /d 0 /f;
+		
 	};
 	{
 	# Disables hidden administrative shares (C$, etc.), prevents lateral movement techniques
@@ -556,7 +573,7 @@ $scripts = @(
 	};
 	{
 	#No more "How's the experience?" pop-ups ever again
-		reg.exe add	"HKCU\Software\Microsoft\Siuf\Rules" /v "NumberOfSIUFInPeriod" /t REG_DWORD /d 0 /f; 
+		reg.exe add	"HKCU\DefaultUser\Software\Microsoft\Siuf\Rules" /v "NumberOfSIUFInPeriod" /t REG_DWORD /d 0 /f; 
 	};
 	{
 	#further killing of windows CDM for no silent installs of PUPs
@@ -584,8 +601,10 @@ $scripts = @(
 		  reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v $name /t REG_DWORD /d 0 /f;
 		}
 	};
+	{
 	#Advertising ID behaviour ad targeting dead
 		  reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f;
+	};
 	{
 	#Disables Bing suggestions
 	#Kills Bing search integration to search
@@ -657,7 +676,7 @@ $scripts = @(
   			'C:\Windows\Setup\Scripts\MoveActiveHours.xml';
   			'C:\Windows\Setup\Scripts\SetStartPins.ps1';
 			) -Force -ErrorAction 'SilentlyContinue';
-	# Leave FirstLogon.ps1 itself for last — it's already running, should be auto scheduled for deletion later
+	# Leave FirstLogon.ps1 itself for last — it's already running, should be auto deleted after finishing
 		Remove-Item -LiteralPath 'C:\Windows\Setup\Scripts\FirstLogon.ps1' -Force -ErrorAction 'SilentlyContinue';
 	};
 );
