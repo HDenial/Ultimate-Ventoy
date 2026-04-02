@@ -78,6 +78,7 @@
 			<UserLocale>pt-BR</UserLocale>
 		</component>
 		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<!-- skips boring stuff, just reformat drives by hand, then create local user by hand -->
 			<OOBE>
 				<ProtectYourPC>3</ProtectYourPC>
 				<HideEULAPage>true</HideEULAPage>
@@ -125,6 +126,10 @@ $selectors = @(
 	'Microsoft.MicrosoftSolitaireCollection';
 	'MicrosoftTeams';
 	'MSTeams';
+	'Microsoft.People';
+	'Microsoft.MicrosoftOfficeHub';
+	'Microsoft.Todos';
+	'Microsoft.OutlookForWindows';
 	'Microsoft.BingWeather';
 	'Microsoft.Xbox.TCUI';
 	'Microsoft.XboxApp';
@@ -451,6 +456,30 @@ $scripts = @(
 		Get-Service -Name 'AppIDSvc' | Start-Service;
 		Set-AppLockerPolicy -XmlPolicy 'C:\Windows\Setup\Scripts\AppLockerPolicy.xml';
 	};
+	{
+	# Stops Windows from collecting user activities (Timeline)
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v "EnableActivityFeed" /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v "PublishUserActivities" /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v "UploadUserActivities" /t REG_DWORD /d 0 /f;
+	};
+	{
+	# Disable even more ad telemetry services, Goodbye windows compatibility telemetry!
+		Get-Service -Name 'DiagTrack' | Set-Service -StartupType 'Disabled';
+		Get-Service -Name 'dmwappushservice' | Set-Service -StartupType 'Disabled';
+	};
+	{
+	#Just in case....
+		Set-SmbServerConfiguration -EnableSMB1Protocol $false -Force;
+		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f;
+	};
+	{
+	# Disables hidden administrative shares (C$, etc.), prevents lateral movement techniques
+		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" /v "AutoShareWks" /t REG_DWORD /d 0 /f;
+	};
+	{
+	#ensure firewall is active
+		Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True;
+	};
 );
 
 &amp; {
@@ -510,18 +539,27 @@ $scripts = @(
 		<File path="C:\Windows\Setup\Scripts\DefaultUser.ps1">
 $scripts = @(
 	{
+	#Niche audio settings error prevention
 		reg.exe add "HKU\DefaultUser\Software\Microsoft\Internet Explorer\LowRegistry\Audio\PolicyConfig\PropertyStore" /f;
 	};
 	{
+	#Prevents GameDVR from silently recording your screen without telling you
 		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 0 /f;
 	};
 	{
+	#Shows file extensions, never be tricked by fake text files again
 		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f;
 	};
 	{
+	#Shows hidden non system folders/files
 		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "Hidden" /t REG_DWORD /d 1 /f;
 	};
 	{
+	#No more "How's the experience?" pop-ups ever again
+		reg.exe add	"HKCU\Software\Microsoft\Siuf\Rules" /v "NumberOfSIUFInPeriod" /t REG_DWORD /d 0 /f; 
+	};
+	{
+	#further killing of windows CDM for no silent installs of PUPs
 		$names = @(
 		  'ContentDeliveryAllowed';
 		  'FeatureManagementEnabled';
@@ -546,8 +584,19 @@ $scripts = @(
 		  reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v $name /t REG_DWORD /d 0 /f;
 		}
 	};
+	#Advertising ID behaviour ad targeting dead
+		  reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f;
 	{
+	#Disables Bing suggestions
+	#Kills Bing search integration to search
+	#Removes the "Search Highlights" (the daily Bing doodles/icons in the search bar)
 		reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f;
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Search" /v "BingSearchEnabled" /t REG_DWORD /d 0 /f;
+    	reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\SearchSettings" /v "IsDynamicSearchBoxEnabled" /t REG_DWORD /d 0 /f;
+	};
+	{
+	#Removes the more options from context menu, simply showing you the options
+		reg.exe add "HKU\DefaultUser\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /ve /t REG_SZ /d "" /f;
 	};
 	{
 		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v "UnattendedSetup" /t REG_SZ /d "powershell.exe -WindowStyle \""Normal\"" -ExecutionPolicy \""Unrestricted\"" -NoProfile -File \""C:\Windows\Setup\Scripts\UserOnce.ps1\""" /f;
@@ -579,6 +628,17 @@ $scripts = @(
 		<File path="C:\Windows\Setup\Scripts\FirstLogon.ps1">
 $scripts = @(
 	{
+		#Creates hibernation cache file
+		#Keeps hibernate as full system store
+		#Makes Power Off button actually shutdown the kernel
+		#Keeps hibernate option on visual menu
+			powercfg.exe /hibernate on
+			powercfg.exe /h /type full
+			reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f;
+			reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f
+	};
+	{
+		#cleanup
 		Remove-Item -LiteralPath @(
 		  'C:\Windows\Panther\unattend.xml';
 		  'C:\Windows\Panther\unattend-original.xml';
@@ -586,14 +646,19 @@ $scripts = @(
 		) -Force -ErrorAction 'SilentlyContinue' -Verbose;
 	};
 	{
-	#creates hibernation cache file
-	#Keeps hibernate as full system store
-	#makes Power Off button actually shutdown the kernel
-	#keeps hibernate option on visual menu
-		powercfg.exe /hibernate on
-		powercfg.exe /h /type full
-		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f;
-		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f
+		#setup files cleanup		
+		Remove-Item -LiteralPath @(
+  			'C:\Windows\Setup\Scripts\Specialize.ps1';
+  			'C:\Windows\Setup\Scripts\DefaultUser.ps1';
+  			'C:\Windows\Setup\Scripts\UserOnce.ps1';
+  			'C:\Windows\Setup\Scripts\RemovePackages.ps1';
+  			'C:\Windows\Setup\Scripts\RemoveCapabilities.ps1';
+  			'C:\Windows\Setup\Scripts\AppLockerPolicy.xml';
+  			'C:\Windows\Setup\Scripts\MoveActiveHours.xml';
+  			'C:\Windows\Setup\Scripts\SetStartPins.ps1';
+			) -Force -ErrorAction 'SilentlyContinue';
+	# Leave FirstLogon.ps1 itself for last — it's already running, should be auto scheduled for deletion later
+		Remove-Item -LiteralPath 'C:\Windows\Setup\Scripts\FirstLogon.ps1' -Force -ErrorAction 'SilentlyContinue';
 	};
 );
 
