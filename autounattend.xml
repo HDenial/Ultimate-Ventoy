@@ -137,6 +137,10 @@ $selectors = @(
 	'Microsoft.XboxGamingOverlay';
 	'Microsoft.XboxSpeechToTextOverlay';
 	'Microsoft.GamingApp';
+	'Microsoft.Windows.DevHome';
+	'Microsoft.AzureConfigSelection';
+	'Microsoft.PowerAutomateDesktop';
+	'Microsoft.WallpaperBackup';
 );
 $getCommand = {
   Get-AppxProvisionedPackage -Online;
