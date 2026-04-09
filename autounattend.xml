@@ -47,7 +47,7 @@
 			<RunSynchronous>
 				<RunSynchronousCommand wcm:action="add">
 					<Order>1</Order>
-					<Path>powershell.exe -WindowStyle "Normal" -NoProfile -Command "$xml = [xml]::new(); $xml.Load('C:\Windows\Panther\unattend.xml'); $sb = [scriptblock]::Create( $xml.unattend.Extensions.ExtractScript ); Invoke-Command -ScriptBlock $sb -ArgumentList $xml;"</Path>
+					<Path>powershell.exe -NoProfile -Command "$path = ('C:\Windows\Panther\unattend.xml','C:\Windows\Panther\autounattend.xml','X:\autounattend.xml','D:\autounattend.xml') | Where-Object { Test-Path $_ } | Select-Object -First 1; if($path) { [xml]$xml = Get-Content $path; $sb = [scriptblock]::Create($xml.unattend.Extensions.ExtractScript); Invoke-Command -ScriptBlock $sb -ArgumentList $xml; }"</Path>
 				</RunSynchronousCommand>
 				<RunSynchronousCommand wcm:action="add">
 					<Order>2</Order>
