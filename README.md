@@ -27,7 +27,7 @@ Ventoy.json settings file expects the following names for your ISOs:
 - memtest.iso (memtest86+)
 
 Add and subtract disks as needed!
-Change expected names and list order on ventoy.jsonon the "key" and "list" entries respectively
+Change expected names and list order on ventoy.json under the "key" and "list" entries respectively
 
   Custom autounattend.xml: A "Client-Control" focused Windows installation.
 
@@ -40,6 +40,8 @@ Change expected names and list order on ventoy.jsonon the "key" and "list" entri
     Security Measures: Disables a few legacy drivers and functions from windows that might pose security risks for the average user.
 
     Fully commented! Remove, Disable or Add whatever you want with no confusion on what each line does!
+    
+  If the default location for this script is at root, it will always be pulled by a windows installation no matter what.
 
 Once booted the drive should look like this:
 <img width="1023" height="766" alt="image" src="https://github.com/user-attachments/assets/7f8acacf-8ba0-4f9b-ab1f-07ca87ded9a3" />
